@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    >
+        <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageviewSingleColor" />
+         <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+            android:padding="10dp"
+            >
+          <Button 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/set_wallpaper_button"
+                android:text="@string/set_wallpaper"
+                android:drawableLeft="@drawable/set_wallpaper_icon"
+                android:layout_gravity="left|center_vertical"
+                android:textSize="12dip"
+                />
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom"
+            >
+            <Button 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/save_image"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/save_icon"
+                android:layout_gravity="left|center_vertical"
+                android:id="@+id/save_button"
+                android:textSize="12dip"
+                />
+              <Button 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/adjust_favs"
+                android:text="@string/adjust_favs"
+                android:drawableLeft="@drawable/fav_icon"
+                android:layout_gravity="left|center_vertical"
+                 android:layout_weight="1"
+                 android:textSize="12dip"
+                />
+        </LinearLayout>
+        </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+        <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageviewSinglePattern" />
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom"
+            android:padding="10dp"
+            >
+            <Button 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/set_wallpaper_button"
+                android:text="@string/set_wallpaper"
+                android:layout_weight="1"
+                />
+              <Button 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/save_button"
+                android:text="@string/save_image"
+                 android:layout_weight="1"
+                />
+        </LinearLayout>
+</FrameLayout>
