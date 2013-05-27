@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,11 +12,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 public class GetPatternImageTask extends AsyncTask<String,Void,Bitmap> {
-	
-	public static String MY_DEBUG_TAG = "my_debug_tag";
 	
 	private HttpURLConnection connection;
 	private Handler handler;
@@ -53,15 +48,13 @@ public class GetPatternImageTask extends AsyncTask<String,Void,Bitmap> {
 	}
 	
 	private Bitmap LoadImage(String URL, BitmapFactory.Options options) {
-		//Log.d(MY_DEBUG_TAG,"LoadImage: " + URL);
 		Bitmap bitmap = null;
 		InputStream in = null;
 		try {
 			in = OpenHttpConnection(URL);
 			bitmap = BitmapFactory.decodeStream(in, null, options);
 			in.close();
-		} catch (IOException e1) {
-			//Log.d(MY_DEBUG_TAG,"image could not be loaded");
+		} catch (IOException e) {
 		}
 		return bitmap;
 	}
@@ -79,8 +72,7 @@ public class GetPatternImageTask extends AsyncTask<String,Void,Bitmap> {
 			if (httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				inputStream = httpConn.getInputStream();
 			}
-		} catch (Exception ex) {
-			//Log.d(MY_DEBUG_TAG,"e:" + ex.getMessage());
+		} catch (Exception e) {
 		}
 		return inputStream;
 	}

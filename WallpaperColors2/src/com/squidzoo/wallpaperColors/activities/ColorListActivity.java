@@ -3,8 +3,8 @@ package com.squidzoo.wallpaperColors.activities;
 import com.squidzoo.wallpaperColors.R;
 import com.squidzoo.wallpaperColors.R.id;
 import com.squidzoo.wallpaperColors.R.layout;
-import com.squidzoo.wallpaperColors.activities.ItemListActivity.ItemType;
 import com.squidzoo.wallpaperColors.tasks.GetColorsTask;
+import com.squidzoo.wallpaperColors.types.ItemType;
 
 import android.os.Handler;
 import android.view.Menu;
@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class ColorListActivity extends ItemListActivity {
-
 	
 	@Override
 	protected void setType(){

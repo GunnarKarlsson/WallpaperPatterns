@@ -62,7 +62,6 @@ public class ColorPickerActivity extends Activity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// To fight color branding.
 		getWindow().setFormat(PixelFormat.RGBA_8888);
 
 		super.onCreate(savedInstanceState);
@@ -141,7 +140,6 @@ public class ColorPickerActivity extends Activity implements
 
 			msg.show();
 
-			// finish();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -151,7 +149,7 @@ public class ColorPickerActivity extends Activity implements
 		Display display = getWindowManager().getDefaultDisplay();
 		int width = display.getWidth();
 		int height = display.getHeight();
-		//hack to get single color bitmap
+		
 		ImageView imageView = (ImageView)findViewById(R.id.bitmapImageView);
 		imageView.setDrawingCacheEnabled(true);
 		imageView.setBackgroundColor(mColorInt);

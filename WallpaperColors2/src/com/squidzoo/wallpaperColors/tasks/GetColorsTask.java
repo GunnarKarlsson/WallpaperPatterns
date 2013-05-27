@@ -16,8 +16,6 @@ import android.util.Log;
 
 public class GetColorsTask extends AsyncTask<String,Void,ArrayList<CustomBean>> {
 	
-	public static String MY_DEBUG_TAG = "my_debug_tag";
-	
 	private HttpURLConnection connection;
 	private Handler handler;
 	
@@ -30,9 +28,6 @@ public class GetColorsTask extends AsyncTask<String,Void,ArrayList<CustomBean>> 
 			URL url = new URL(params[0]);
 			connection = (HttpURLConnection)url.openConnection();
 			connection.setRequestMethod("GET");
-			//connection.setRequestProperty("Accept","text/plain");
-			//connection.setReadTimeout(10);
-			//connection.setConnectTimeout(10);
 			connection.connect();
 			int statusCode = connection.getResponseCode();
 			
@@ -45,8 +40,6 @@ public class GetColorsTask extends AsyncTask<String,Void,ArrayList<CustomBean>> 
 			
 			return items;
 		}catch(Exception e){
-			//Log.e("Error",e.getMessage());
-			
 			return null;
 		}finally{
 			if(connection != null){
@@ -58,8 +51,6 @@ public class GetColorsTask extends AsyncTask<String,Void,ArrayList<CustomBean>> 
 
 	@Override
 	protected void onPostExecute(ArrayList<CustomBean> items){
-		Log.d(MY_DEBUG_TAG,"onPostExecute");
-		
 		Message message = new Message();
 		Bundle data = new Bundle();
 		data.putParcelableArrayList("itemsArrayList", items);

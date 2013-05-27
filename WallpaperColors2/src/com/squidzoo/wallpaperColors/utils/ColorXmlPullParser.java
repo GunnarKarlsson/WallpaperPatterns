@@ -7,14 +7,13 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import com.squidzoo.wallpaperColors.beans.CustomBean;
+import com.squidzoo.wallpaperColors.types.ItemType;
 
 
 import android.util.Log;
 
 public class ColorXmlPullParser {
 	private XmlPullParser parser;
-
-	public static String MY_DEBUG_TAG = "my_debug_tag";
 
 	public static ArrayList<CustomBean> parseItem(InputStream xml) throws Exception {
 		return new ColorXmlPullParser().parse(xml);
@@ -32,20 +31,16 @@ public class ColorXmlPullParser {
 			String name = null;
 			switch (eventType) {
 			case XmlPullParser.START_DOCUMENT:
-				//Log.d(MY_DEBUG_TAG, "in_start document");
 				items = new ArrayList<CustomBean>();
 				break;
 
 			case XmlPullParser.START_TAG:
 				name = parser.getName();
-				//Log.d(MY_DEBUG_TAG, "in start tag: " + name);
 
 				if (name.equalsIgnoreCase("color")) {
-					Log.d(MY_DEBUG_TAG, "creating new item object");	
 					currentItem = new CustomBean();
 				}else if(currentItem != null){
 					if(name.equalsIgnoreCase("hex")){
-						//Log.d(MY_DEBUG_TAG, "name equals hex");	
 						currentItem.setHex(parser.nextText());
 					}
 					if(name.equalsIgnoreCase("badgeUrl")){
@@ -62,13 +57,13 @@ public class ColorXmlPullParser {
 					}
 					if(name.equalsIgnoreCase("id")){
 						currentItem.setId(parser.nextText());
+						currentItem.setType(ItemType.COLOR);
 					}
 				}
 				break;
 			
 			case XmlPullParser.END_TAG:
 				name = parser.getName();
-				//Log.d(MY_DEBUG_TAG, "in end tag: " + name);
 				if((name.equalsIgnoreCase("color") || name.equalsIgnoreCase("pattern")) && currentItem != null){
 					items.add(currentItem);
 				}else if(name.equalsIgnoreCase("colors") || name.equalsIgnoreCase("patterns")){

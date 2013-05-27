@@ -1,6 +1,8 @@
 package com.squidzoo.wallpaperColors.beans;
 
 
+import com.squidzoo.wallpaperColors.types.ItemType;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,7 +13,7 @@ public class CustomBean implements Parcelable, ICustomBean{
 	private String mImageUrl;
 	private String mId;
 	private String mBadgeUrl;
-	private String mType;
+	private ItemType mType;
 	
 	public CustomBean(Parcel in){
 		mName = in.readString();
@@ -24,11 +26,11 @@ public class CustomBean implements Parcelable, ICustomBean{
 		
 	}
 	
-	public void setType(String value){
+	public void setType(ItemType value){
 		mType = value;
 	}
 	
-	public String getType(){
+	public ItemType getType(){
 		return mType;
 	}
 	

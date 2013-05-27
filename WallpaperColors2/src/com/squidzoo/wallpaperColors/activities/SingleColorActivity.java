@@ -1,16 +1,6 @@
 package com.squidzoo.wallpaperColors.activities;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Random;
-
-import com.squidzoo.wallpaperColors.R;
-import com.squidzoo.wallpaperColors.R.id;
-import com.squidzoo.wallpaperColors.R.layout;
-import com.squidzoo.wallpaperColors.beans.CustomBean;
 
 import android.app.Activity;
 import android.app.WallpaperManager;
@@ -20,15 +10,19 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.ProgressBar;
+
+import com.squidzoo.wallpaperColors.R;
+import com.squidzoo.wallpaperColors.beans.CustomBean;
+import com.squidzoo.wallpaperColors.types.ItemType;
+import com.squidzoo.wallpaperColors.utils.FavoritesManager;
+import com.squidzoo.wallpaperColors.utils.SDCardSaver;
+import com.squidzoo.wallpaperColors.utils.ToastMaker;
 
 public class SingleColorActivity extends Activity implements OnClickListener {
 	public static String MY_DEBUG_TAG = "my_debug_tag";
@@ -37,39 +31,48 @@ public class SingleColorActivity extends Activity implements OnClickListener {
 	int mColorInt;
 	Bitmap mBitmap;
 	String mIdValue;
-	com.squidzoo.wallpaperColors.beans.CustomBean mColor;
+	CustomBean mItem;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.single_color);
-
+		setContentView(R.layout.single_item_activity);
+		ProgressBar pgb = (ProgressBar)findViewById(R.id.progressBar);
+		pgb.setVisibility(ProgressBar.GONE);
+		setTitle("  Wallpaper Colors HD");
 		Intent intent = getIntent();
 
-		mColor = new com.squidzoo.wallpaperColors.beans.CustomBean();
-		if (intent.hasExtra("hex")) {
-			mColor.setHex(intent.getStringExtra("hex"));
+		mItem = new com.squidzoo.wallpaperColors.beans.CustomBean();
+		
+		if(intent.hasExtra("type")){
+			String type = intent.getStringExtra("type");
+			if(type.equalsIgnoreCase(ItemType.COLOR.toString())){
+				mItem.setType(ItemType.COLOR);
+			}else{
+				mItem.setType(ItemType.PATTERN);
+			}
 		}
+		
 		if (intent.hasExtra("creator")) {
-			mColor.setCreator(intent.getStringExtra("creator"));
+			mItem.setCreator(intent.getStringExtra("creator"));
 		}
 		if (intent.hasExtra("idvalue")) {
-			mColor.setId(intent.getStringExtra("idvalue"));
+			mItem.setId(intent.getStringExtra("idvalue"));
 		}
 		if (intent.hasExtra("badgeurl")) {
-			Log.d(MY_DEBUG_TAG, intent.getStringExtra("badgeurl"));
-			mColor.setBadgeUrl(intent.getStringExtra("badgeurl"));
+			mItem.setBadgeUrl(intent.getStringExtra("badgeurl"));
 		}
 		if (intent.hasExtra("imageurl")) {
-			Log.d(MY_DEBUG_TAG, intent.getStringExtra("imageurl"));
-			mColor.setImageUrl(intent.getStringExtra("imageurl"));
+			mItem.setImageUrl(intent.getStringExtra("imageurl"));
 		}
 		if (intent.hasExtra("name")) {
-			mColor.setName(intent.getStringExtra("name"));
+			mItem.setName(intent.getStringExtra("name"));
 		}
 
 		if (getIntent().hasExtra("hex")) {
-			mImageView = (ImageView) findViewById(R.id.imageviewSingleColor);
+			mItem.setHex(intent.getStringExtra("hex"));
+
+			mImageView = (ImageView) findViewById(R.id.imageviewSingleItem);
 			String extraString = getIntent().getStringExtra("hex");
 			String hexString = "#" + extraString;
 			mColorInt = Color.parseColor(hexString);
@@ -86,13 +89,12 @@ public class SingleColorActivity extends Activity implements OnClickListener {
 		saveButton.setOnClickListener(this);
 		Button setButton = (Button) findViewById(R.id.set_wallpaper_button);
 		setButton.setOnClickListener(this);
-
 		Button favsButton = (Button) findViewById(R.id.adjust_favs);
 		favsButton.setOnClickListener(this);
 
 		SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
 
-		if (prefs.contains(mColor.getId().toString())) {
+		if (prefs.contains(mItem.getId().toString())) {
 			favsButton.setText("Remove from Favs");
 		} else {
 			favsButton.setText("Add to favs");
@@ -104,7 +106,7 @@ public class SingleColorActivity extends Activity implements OnClickListener {
 
 		switch (view.getId()) {
 		case R.id.save_button:
-			String newPicture = saveToSDCard();
+			String newPicture = SDCardSaver.saveBitmapToSDCard(getBitmap(), this);
 			startMediaScanner(newPicture);
 			break;
 		case R.id.set_wallpaper_button:
@@ -117,97 +119,15 @@ public class SingleColorActivity extends Activity implements OnClickListener {
 
 	private void setFavs() {
 		SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-		if (prefs.contains(mColor.getId().toString())) {
-			removeFromFavs(prefs);
+		if (prefs.contains(mItem.getId().toString())) {
+			FavoritesManager.removeFromFavs(prefs, mItem, this);
+			Button favsButton = (Button) findViewById(R.id.adjust_favs);
+			favsButton.setText("Add to favs");
 		} else {
-			addToFavs(prefs);
-
+			FavoritesManager.addToFavs(prefs, mItem, this);
+			Button favsButton = (Button) findViewById(R.id.adjust_favs);
+			favsButton.setText("Remove from Favs");	
 		}
-	}
-
-	private void addToFavs(SharedPreferences prefs) {
-		String serializedColor = mColor.getCreator() + "," + mColor.getHex()
-				+ "," + mColor.getId() + "," + mColor.getBadgeUrl() + ","
-				+ mColor.getName();
-		SharedPreferences.Editor prefEdit = prefs.edit();
-		prefEdit.putString(mColor.getId(), serializedColor);
-		prefEdit.commit();
-		prefEdit.commit();
-		Button favsButton = (Button) findViewById(R.id.adjust_favs);
-		favsButton.setText("Remove from Favs");
-
-		Toast msg = Toast.makeText(this, "wallpaper added to favorites",
-				Toast.LENGTH_SHORT);
-
-		msg.setGravity(Gravity.CENTER, msg.getXOffset() / 2,
-				msg.getYOffset() / 2);
-
-		msg.show();
-	}
-
-	private void removeFromFavs(SharedPreferences prefs) {
-		SharedPreferences.Editor prefEdit = prefs.edit();
-		prefEdit.remove(mColor.getId().toString());
-		prefEdit.commit();
-		Button favsButton = (Button) findViewById(R.id.adjust_favs);
-		favsButton.setText("Add to favs");
-
-		Toast msg = Toast.makeText(this, "wallpaper removed from favorites",
-				Toast.LENGTH_SHORT);
-
-		msg.setGravity(Gravity.CENTER, msg.getXOffset() / 2,
-				msg.getYOffset() / 2);
-
-		msg.show();
-	}
-
-	private String saveToSDCard() {
-		// get random file name
-		Random generator = new Random();
-		int n = 10000;
-		n = generator.nextInt(n);
-		String fileName = "Wallpaper-" + n + ".jpg";
-
-		StringBuffer createdFile = new StringBuffer();
-		File externalStorageFile = new File(
-				Environment
-						.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-				fileName);
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		getBitmap().compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-		byte b[] = bytes.toByteArray();
-
-		try {
-			externalStorageFile.createNewFile();
-			OutputStream filoutputStream = new FileOutputStream(
-					externalStorageFile);
-			filoutputStream.write(b);
-			filoutputStream.flush();
-			filoutputStream.close();
-			createdFile.append(externalStorageFile.getAbsolutePath());
-
-			Toast msg = Toast.makeText(this, "wallpaper has been saved as: "
-					+ fileName, Toast.LENGTH_SHORT);
-
-			msg.setGravity(Gravity.CENTER, msg.getXOffset() / 2,
-					msg.getYOffset() / 2);
-
-			msg.show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-
-			Toast msg = Toast.makeText(this, "wallpaper could not be saved",
-					Toast.LENGTH_LONG);
-
-			msg.setGravity(Gravity.CENTER, msg.getXOffset() / 2,
-					msg.getYOffset() / 2);
-
-			msg.show();
-		}
-
-		return createdFile.toString();
-
 	}
 
 	private void startMediaScanner(String addedPicture) {
@@ -217,20 +137,11 @@ public class SingleColorActivity extends Activity implements OnClickListener {
 
 	private void setWallpaper() {
 		try {
-			// Set bitmap it as wallpaper
 			mWallpaperManager.setBitmap(getBitmap());
+			ToastMaker.makeToast(this, "New wallpaper has been set");
 
-			Toast msg = Toast.makeText(this, "New wallpaper has been set",
-					Toast.LENGTH_LONG);
-
-			msg.setGravity(Gravity.CENTER, msg.getXOffset() / 2,
-					msg.getYOffset() / 2);
-
-			msg.show();
-
-			// finish();
 		} catch (IOException e) {
-			e.printStackTrace();
+			ToastMaker.makeToast(this, "Wallpaper could not be set");
 		}
 	}
 
@@ -238,7 +149,6 @@ public class SingleColorActivity extends Activity implements OnClickListener {
 		Display display = getWindowManager().getDefaultDisplay();
 		int width = display.getWidth();
 		int height = display.getHeight();
-		// Resize bitmap
 		Bitmap bitmapFromView = mImageView.getDrawingCache();
 		mBitmap = Bitmap.createScaledBitmap(bitmapFromView, width, height,
 				false);
