@@ -3,10 +3,11 @@
 This project aims to provide an Android app which allows users to set a color or pattern as wallpaper on their device's home screen. The patterns are provided by colourlovers.com
 
 ## Features:
-
+-select wallpaper among patterns from colourlovers.com
+-select color from colourlovers.
+-save color or patterns as favorite.
 
 ![Screen shots](https://github.com/GunnarKarlsson/flickpro/raw/master/screenShots.png)
-
 
 ## Background
 
