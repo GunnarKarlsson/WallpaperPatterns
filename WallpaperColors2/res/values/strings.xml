@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wallpaper Colors HD</string>
-    <string name="randomize">Randomize</string>
     <string name="set_wallpaper">Set as Wallpaper</string>
-    <string name="color_list">Color List</string>
     <string name="adjust_favs">Add to Favorites</string>
     <string name="save_image">Save to SDCard</string>
+    <string name="top_colors">Top Colors</string>
+    <string name="new_colors">New Colors</string>
+    <string name="new_patterns">New Patterns</string>
+    <string name="top_patterns">Top Patterns</string>
+    <string name="title">Title</string>
 </resources>

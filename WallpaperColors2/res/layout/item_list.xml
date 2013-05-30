@@ -3,7 +3,6 @@
       xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffff"
     android:orientation="vertical" >
 
 <RelativeLayout
@@ -24,14 +23,6 @@
         android:cacheColorHint="#00000000"
         android:fastScrollEnabled="true" 
        />
-       <com.google.ads.AdView android:id="@+id/adView"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_alignParentBottom="true"
-                         ads:adUnitId="ad_id"
-                         ads:adSize="BANNER"
-                         ads:loadAdOnCreate="true"
-                         android:visibility="invisible"/>
  
 </RelativeLayout>
 </FrameLayout>

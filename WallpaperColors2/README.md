@@ -38,8 +38,3 @@ The project was written in Java and xml using the Android SDK.
     Artwork:
     
     Artwork assets (png files): Copyright © Gunnar Karlsson 2012 - 2013 and are not covered by the Apache License.
-
-    Other libraries:
-
-    Colorpicker Copyright © 2010 Daniel Nilsson
-    Licensed under the Apache License, Version 2.0.

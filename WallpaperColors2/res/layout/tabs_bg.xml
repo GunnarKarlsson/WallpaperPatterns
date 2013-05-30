@@ -11,13 +11,14 @@
     <ImageView android:id="@+id/tab_icon" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@null"
         />
     <TextView
         android:id="@+id/tabsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title"
+        android:text="@string/title"
         android:textColor="@drawable/tab_text_selector"
-        android:textSize="12dip" />
+        android:textSize="12sp" />
 
 </LinearLayout>
