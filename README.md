@@ -8,7 +8,7 @@ Select wallpaper among patterns from colourlovers.com.
 Select color from colourlovers.
 Save color or patterns as favorite.
 
-![Screen shots](https://github.com/GunnarKarlsson/WallpaperPatterns/master/WallpaperColors2/screenShots.png)
+![Screen shots](https://raw.github.com/GunnarKarlsson/WallpaperPatterns/master/WallpaperColors2/screenShots.png)
 
 ## Background
 
