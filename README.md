@@ -9,6 +9,7 @@ Select color from colourlovers.
 Save color or patterns as favorite.
 
 ![Screen shots](https://github.com/GunnarKarlsson/WallpaperPatterns/tree/master/WallpaperColors2/screenShots.png)
+
 ## Background
 
 Wallpaper Patterns was launched on Google Play in 2012. It was open-sourced in May 2013. 
