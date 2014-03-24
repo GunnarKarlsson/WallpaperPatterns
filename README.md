@@ -16,8 +16,6 @@ Wallpaper Patterns was launched on Google Play in 2012. It was open-sourced in M
 
 The project was written in Java and xml using the Android SDK.
 
-[![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](http://play.google.com/store/apps/details?id=air.com.squidzoo.wallpaperColors)
-
 ## Licenses
 
     Copyright © 2012 - 2013 Gunnar Karlsson
